@@ -1,5 +1,4 @@
 import webbrowser
-from Server.server import Server as baseServer
+from concurrent.futures import ThreadPoolExecutor
 #文件服务器
-baseServer()
-webbrowser.open("http://localhost:8888")
+webbrowser.open("http://localhost:8888/index.html")
