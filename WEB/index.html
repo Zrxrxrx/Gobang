@@ -10,11 +10,13 @@
 
 <body>
     <div id="app">
-        <input v-model="size">
-        <button @click="start">
-            初始化
-        </button>
-        <canvas id="canvas" :width="canvasWidth" :height="canvasHeight" @click="chess" />
+        <div>
+            <input v-model="size">
+            <button @click="start">
+                初始化
+            </button>
+        </div>
+        <canvas id="canvas" :width="canvasWidth" :height="canvasHeight" @click="chess"></canvas>
         <ul>
             <li v-for="str in history">{{str}}</li>
         </ul>
@@ -65,10 +67,11 @@
                 console.log("连接错误")
             },
             getMessage: function (msg) {
-                this.history.push(msg.data);
-                this.data = JSON.parse(msg.data);
+                //this.history.push(msg.data);
+                console.log(msg.data);
+                this.data = msg.data.replace("[","").replace("]","").split(',');
                 this.print();
-                console.log(msg.data)
+                console.log(this.data)
             },
             send: function (str) {
                 this.history.push(str);
@@ -86,7 +89,9 @@
                 }
             },
             print: function () {
-                let w = this.canvasWidth / this.size;
+                console.log(this.data.length)
+                let size = parseInt(this.size);
+                let w = this.canvasWidth / size;
                 for (let s = w; s < this.canvasWidth; s += w) {
                     this.ctx.beginPath();//开始绘制
                     this.ctx.lineWidth = 1;
@@ -97,7 +102,7 @@
                     this.ctx.lineTo(this.canvasHeight, s);//终点,或者理解为下一个点
                     this.ctx.stroke();
                 }
-                let h = this.canvasHeight / this.size;
+                let h = this.canvasHeight / size;
                 for (let s = h; s < this.canvasHeight; s += h) {
                     this.ctx.beginPath();//开始绘制
                     this.ctx.lineWidth = 1;
@@ -108,29 +113,25 @@
                     this.ctx.lineTo(s, this.canvasHeight);//终点,或者理解为下一个点
                     this.ctx.stroke();
                 }
-                for (let x = 0; x < this.size; x++) {
+                for (let x = 0; x < size; x++) {
                     let xw = w / 2 + x * w;
-                    for (let y = 0; y < this.size; y++) {
+                    for (let y = 0; y < size; y++) {
                         let yh = h / 2 + y * h;
-                        if (this.data[x * this.size + y ] == 1) {
-                            this.ctx.beginPath();
-                            this.ctx.lineWidth = 5;
-                            this.ctx.strokeStyle = 'black';
-                            this.ctx.fillStyle = 'yellow';
-                            //(x,y,半径,开始角度，结束角度)，通过这个可以绘制出曲线
-                            this.ctx.arc(xw, yh, w / 2 * 0.8, 0, 2 * Math.PI);
-                            this.ctx.stroke();
-                            this.ctx.fill();
-                        } else if (this.data[x * this.size + y ] == 2) {
-                            this.ctx.beginPath();
-                            this.ctx.lineWidth = 5;
-                            this.ctx.strokeStyle = 'black';
+                        this.ctx.beginPath();
+                        // this.ctx.lineWidth = 5;
+                        // this.ctx.strokeStyle = 'black';
+                        if (this.data[x * size + y] == 1) {
                             this.ctx.fillStyle = 'red';
-                            //(x,y,半径,开始角度，结束角度)，通过这个可以绘制出曲线
-                            this.ctx.arc(xw, yh, w / 2 * 0.8, 0, 2 * Math.PI);
-                            this.ctx.stroke();
-                            this.ctx.fill();
+                            console.log(x,y)
+                        } else if (this.data[x * size + y] == 2) {
+                            this.ctx.fillStyle = 'yellow';
+                        } else {
+                            this.ctx.fillStyle = 'white';
                         }
+                        //(x,y,半径,开始角度，结束角度)，通过这个可以绘制出曲线
+                        this.ctx.arc(xw, yh, w / 2 * 0.8, 0, 2 * Math.PI);
+                        this.ctx.stroke();
+                        this.ctx.fill();
                     }
                 }
             }

@@ -12,10 +12,10 @@ async def recv_msg(websocket):
         #global g
         if(data['type']=='start'):
             g = game.Game()
-            await websocket.send(json.dumps(g.getRawTable()))
+            await websocket.send(','.join(str(i) for i in g.getRawTable()))
         if(data['type']=='chess'):
             g.chess(data['data'][0],data['data'][1],1)
-            await websocket.send(json.dumps(g.getRawTable()))
+            await websocket.send(','.join(str(i) for i in g.getRawTable()))
         #response_text = f"your submit context: {recv_text}"
         
 
