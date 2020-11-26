@@ -35,8 +35,9 @@ from aiohttp import web
 from threading import Thread
 import os
 
+
 class Server():
-    def __init__(self,host= '127.0.0.1',port= 8888):
+    def __init__(self, host='127.0.0.1', port=8888):
         app = web.Application()
-        app.router.add_static('/',path=os.path.join(os.getcwd(),'WEB'))
-        web.run_app(app,host=host,port=port)
+        app.router.add_static('/', path=os.path.join(os.getcwd(), 'WEB'))
+        web.run_app(app, host=host, port=port)
