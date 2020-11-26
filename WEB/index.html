@@ -106,10 +106,17 @@
                     this.ctx.stroke();
                 }
                 for (let x = 0; x < this.size; x++) {
-                    let xw = w/2 + x*w;
+                    let xw = w / 2 + x * w;
                     for (let y = 0; y < this.size; y++) {
-                        let yh = h/2 + y*h;
-                        
+                        let yh = h / 2 + y * h;
+                        this.ctx.beginPath();
+                        this.ctx.lineWidth = 5;
+                        this.ctx.strokeStyle = 'black';
+                        this.ctx.fillStyle = 'yellow';
+                        //(x,y,半径,开始角度，结束角度)，通过这个可以绘制出曲线
+                        this.ctx.arc(xw, yh, w / 2*0.8, 0, 2 * Math.PI);
+                        this.ctx.stroke();
+                        this.ctx.fill();
                     }
                 }
             }
