@@ -10,7 +10,7 @@ class game():
             pass
     def getRawTable(self):
         return self.tableMap
-    def placeChest(self,x,y,player):
+    def chess(self,x,y,player):
         self.tableMap[(x-1)*self.mapsize+y] = player
         print(self.checkWin(x,y))
     #get which players current x,y
@@ -34,9 +34,9 @@ class game():
             return count
 
 g = game(size=20)
-g.placeChest(1,1,1)
-g.placeChest(1,2,1)
-g.placeChest(1,3,1)
-g.placeChest(1,4,1)
-g.placeChest(1,5,1)
+g.chess(1,1,1)
+g.chess(1,2,1)
+g.chess(1,3,1)
+g.chess(1,4,1)
+g.chess(1,5,1)
 print(g.getRawTable())
