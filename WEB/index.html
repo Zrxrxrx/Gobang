@@ -14,15 +14,10 @@
         <button @click="start">
             初始化
         </button>
-        <button @click="chess">
-            发射
-        </button>
-        <button @click="send('1230')">
-            发射
-        </button>
         <ul>
             <li v-for="str in history">{{str}}</li>
         </ul>
+        <canvas id="canvas" :width="canvasWidth" :height="canvasHeight" @click="chess" />
     </div>
 </body>
 <script>
@@ -33,13 +28,19 @@
                 path: "ws://127.0.0.1:5678",
                 socket: "",
                 message: 'Hello Vue!',
-                size:10,
-                history:[]
+                size: 10,
+                history: [],
+                context: {},
+                canvasWidth: 500,
+                canvasHeight: 500
             }
         },
         mounted() {
             // 初始化
             this.init()
+            let canvas = document.getElementById('canvas')
+            this.ctx = canvas.getContext('2d')
+            this.print();
         },
         methods: {
             init: function () {
@@ -73,11 +74,44 @@
             close: function () {
                 console.log("socket已经关闭")
             },
-            start:function(){
-                this.send(JSON.stringify({type:'start',data:8}))
+            start: function () {
+                this.send(JSON.stringify({ type: 'start', data: this.size }))
             },
-            chess:function(){
-                this.send(JSON.stringify({type:'chess',data:[1,2]}))
+            chess: function (e) {
+                if (!(e.layerX % (this.canvasWidth / this.size) == 0 || e.layerY % (this.canvasHeight / this.size) == 0)) {
+                    this.send(JSON.stringify({ type: 'chess', data: [Math.ceil(e.layerX / (this.canvasWidth / this.size)), Math.ceil(e.layerY / (this.canvasHeight / this.size))] }))
+                }
+            },
+            print: function () {
+                let w = this.canvasWidth / this.size;
+                for (let s = w; s < this.canvasWidth; s += w) {
+                    this.ctx.beginPath();//开始绘制
+                    this.ctx.lineWidth = 1;
+                    this.ctx.strokeStyle = 'blue';
+                    this.ctx.moveTo(0, s);//坐标起点
+                    //线的端点是圆，还可以是butt(正方)，square(正方，但是追加一段长为线段厚度一半的矩形区域)
+                    this.ctx.lineCap = 'round';
+                    this.ctx.lineTo(this.canvasHeight, s);//终点,或者理解为下一个点
+                    this.ctx.stroke();
+                }
+                let h = this.canvasHeight / this.size;
+                for (let s = h; s < this.canvasHeight; s += h) {
+                    this.ctx.beginPath();//开始绘制
+                    this.ctx.lineWidth = 1;
+                    this.ctx.strokeStyle = 'blue';
+                    this.ctx.moveTo(s, 0);//坐标起点
+                    //线的端点是圆，还可以是butt(正方)，square(正方，但是追加一段长为线段厚度一半的矩形区域)
+                    this.ctx.lineCap = 'round';
+                    this.ctx.lineTo(s, this.canvasHeight);//终点,或者理解为下一个点
+                    this.ctx.stroke();
+                }
+                for (let x = 0; x < this.size; x++) {
+                    let xw = w/2 + x*w;
+                    for (let y = 0; y < this.size; y++) {
+                        let yh = h/2 + y*h;
+                        
+                    }
+                }
             }
         },
         destroyed() {

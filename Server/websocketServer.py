@@ -4,16 +4,17 @@ import json
 import game
 # 接收客户端消息并处理，这里只是简单把客户端发来的返回回去
 async def recv_msg(websocket):
-    global g
+    g = None
     while True:
         recv_text = await websocket.recv()
         await websocket.send("get")
         data = json.loads(recv_text)
+        #global g
         if(data['type']=='start'):
             g = game.Game()
             await websocket.send(json.dumps(g.getRawTable()))
         if(data['type']=='chess'):
-            g = g.chess(data['data'][0],data['data'][1],1)
+            g.chess(data['data'][0],data['data'][1],1)
             await websocket.send(json.dumps(g.getRawTable()))
         #response_text = f"your submit context: {recv_text}"
         

@@ -29,7 +29,6 @@ class Game():
             return True
         else:
             return False
-        
     def check(self,x,y,ax,ay,count):
         if(self.getPlayer(x,y)==self.getPlayer(x+ax,y+ay)):
             return self.check(x+ax,y+ay,ax,ay,count+1)
