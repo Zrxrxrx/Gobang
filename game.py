@@ -1,7 +1,10 @@
-class game():
+class Game():
     tableMap = []
     mapsize = 0
     def __init__(self,size=10):
+        self.tableMap = [0 for i in range(size*size)]
+        self.mapsize = size
+    def start(self,size=10):
         self.tableMap = [0 for i in range(size*size)]
         self.mapsize = size
     def printRawTable(self):
@@ -11,13 +14,13 @@ class game():
     def getRawTable(self):
         return self.tableMap
     def chess(self,x,y,player):
-        self.tableMap[(x-1)*self.mapsize+y] = player
+        self.tableMap[(x-1)*self.mapsize+y-1] = player
         print(self.checkWin(x,y))
     #get which players current x,y
     #return 0,1,2
     def getPlayer(self,x,y):
         if(x>0 and x<=self.mapsize and y>0 and y<=self.mapsize):
-            return self.tableMap[(x-1)*self.mapsize+y]
+            return self.tableMap[(x-1)*self.mapsize+y-1]
         else:
             return -1
             pass
@@ -33,10 +36,10 @@ class game():
         else:
             return count
 
-g = game(size=20)
-g.chess(1,1,1)
-g.chess(1,2,1)
-g.chess(1,3,1)
-g.chess(1,4,1)
-g.chess(1,5,1)
-print(g.getRawTable())
+#g = game()
+# g.chess(1,1,1)
+# g.chess(1,2,1)
+# g.chess(1,3,1)
+# g.chess(1,4,1)
+# g.chess(1,5,1)
+# print(g.getRawTable())

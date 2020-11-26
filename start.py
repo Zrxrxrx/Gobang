@@ -1,4 +1,7 @@
 import webbrowser
-from concurrent.futures import ThreadPoolExecutor
+import os
 #文件服务器
-webbrowser.open("http://localhost:8888/index.html")
+
+
+webbrowser.open(os.path.join(os.getcwd(),'WEB','index.html'))
+import Server.websocketServer

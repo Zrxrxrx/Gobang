@@ -1,13 +1,22 @@
 import asyncio
 import websockets
-
-
+import json
+import game
 # 接收客户端消息并处理，这里只是简单把客户端发来的返回回去
 async def recv_msg(websocket):
+    global g
     while True:
         recv_text = await websocket.recv()
-        response_text = f"your submit context: {recv_text}"
-        await websocket.send(response_text)
+        await websocket.send("get")
+        data = json.loads(recv_text)
+        if(data['type']=='start'):
+            g = game.Game()
+            await websocket.send(json.dumps(g.getRawTable()))
+        if(data['type']=='chess'):
+            g = g.chess(data['data'][0],data['data'][1],1)
+            await websocket.send(json.dumps(g.getRawTable()))
+        #response_text = f"your submit context: {recv_text}"
+        
 
 # 服务器端主逻辑
 # websocket和path是该函数被回调时自动传过来的，不需要自己传
