@@ -34,8 +34,8 @@
                 history: [],
                 data: [],
                 context: {},
-                canvasWidth: 500,
-                canvasHeight: 500
+                canvasWidth: 800,
+                canvasHeight: 800
             }
         },
         mounted() {
@@ -69,9 +69,12 @@
             getMessage: function (msg) {
                 //this.history.push(msg.data);
                 console.log(msg.data);
-                this.data = msg.data.replace("[","").replace("]","").split(',');
-                this.print();
-                console.log(this.data)
+                if (msg.data == "win") {
+                    alert("win")
+                } else {
+                    this.data = msg.data.replace("[", "").replace("]", "").split(',');
+                    this.print();
+                }
             },
             send: function (str) {
                 this.history.push(str);
@@ -118,14 +121,16 @@
                     for (let y = 0; y < size; y++) {
                         let yh = h / 2 + y * h;
                         this.ctx.beginPath();
-                        // this.ctx.lineWidth = 5;
-                        // this.ctx.strokeStyle = 'black';
+                        this.ctx.lineWidth = 1;
+                        this.ctx.strokeStyle = 'black';
                         if (this.data[x * size + y] == 1) {
                             this.ctx.fillStyle = 'red';
-                            console.log(x,y)
+                            console.log(x, y)
                         } else if (this.data[x * size + y] == 2) {
                             this.ctx.fillStyle = 'yellow';
                         } else {
+                            this.ctx.lineWidth = 1;
+                            this.ctx.strokeStyle = 'white';
                             this.ctx.fillStyle = 'white';
                         }
                         //(x,y,半径,开始角度，结束角度)，通过这个可以绘制出曲线

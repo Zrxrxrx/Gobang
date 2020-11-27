@@ -1,7 +1,9 @@
 class Game():
     tableMap = []
     mapsize = 0
+    player = 1
     def __init__(self,size=10):
+        size = int(size)
         self.tableMap = [0 for i in range(size*size)]
         self.mapsize = size
     def start(self,size=10):
@@ -13,9 +15,12 @@ class Game():
             pass
     def getRawTable(self):
         return self.tableMap
-    def chess(self,x,y,player):
-        self.tableMap[(x-1)*self.mapsize+y-1] = player
-        print(self.checkWin(x,y))
+    def chess(self,x,y):
+        self.tableMap[(x-1)*self.mapsize+y-1] = self.player
+        if(self.player==1):
+            self.player=2
+        else:
+            self.player=1
     #get which players current x,y
     #return 0,1,2
     def getPlayer(self,x,y):

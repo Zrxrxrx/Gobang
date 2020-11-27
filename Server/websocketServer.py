@@ -9,14 +9,15 @@ async def recv_msg(websocket):
         recv_text = await websocket.recv()
         await websocket.send("get")
         data = json.loads(recv_text)
-        #global g
+        
         if(data['type']=='start'):
-            g = game.Game()
+            g = game.Game(size=data['data'])
             await websocket.send(','.join(str(i) for i in g.getRawTable()))
         if(data['type']=='chess'):
-            g.chess(data['data'][0],data['data'][1],1)
+            g.chess(data['data'][0],data['data'][1])
             await websocket.send(','.join(str(i) for i in g.getRawTable()))
-        #response_text = f"your submit context: {recv_text}"
+            if(g.checkWin(data['data'][0],data['data'][1])):
+                await websocket.send("win")
         
 
 # 服务器端主逻辑
