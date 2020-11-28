@@ -16,6 +16,8 @@ class Game():
     def getRawTable(self):
         return self.tableMap
     def chess(self,x,y):
+        if(self.getPlayer(x,y)!=0):
+            return
         self.tableMap[(x-1)*self.mapsize+y-1] = self.player
         if(self.player==1):
             self.player=2
