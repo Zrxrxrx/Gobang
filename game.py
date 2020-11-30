@@ -1,14 +1,14 @@
+import tableClass
 class Game():
     tableMap = []
     mapsize = 0
     player = 1
+    tableTree = None
     def __init__(self,size=10):
         size = int(size)
         self.tableMap = [0 for i in range(size*size)]
         self.mapsize = size
-    def start(self,size=10):
-        self.tableMap = [0 for i in range(size*size)]
-        self.mapsize = size
+        self.tableTree = tableClass.table(size)
     def printRawTable(self):
         for target_list in self.tableMap:
             print(target_list)
@@ -18,7 +18,9 @@ class Game():
     def chess(self,x,y):
         if(self.getPlayer(x,y)!=0):
             return
-        self.tableMap[(x-1)*self.mapsize+y-1] = self.player
+        self.tableTree.chess(x,y,self.player)
+        self.tableMap = self.tableTree.getArray()
+        #self.tableMap[(x-1)*self.mapsize+y-1] = self.player
         if(self.player==1):
             self.player=2
         else:
