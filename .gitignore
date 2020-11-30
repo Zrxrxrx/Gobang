@@ -1,4 +1,4 @@
-# __pycache__
+__pycache__
 .vscode
 *.py[c]
 # __pycache__/game.cpython-38.pyc
