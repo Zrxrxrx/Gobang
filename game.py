@@ -18,7 +18,7 @@ class Game():
     def chess(self,x,y):
         if(self.getPlayer(x,y)!=0):
             return
-        self.tableTree.chess(x,y,self.player)
+        self.tableTree.chess(x,y)
         self.tableMap = self.tableTree.getArray()
         #self.tableMap[(x-1)*self.mapsize+y-1] = self.player
         if(self.player==1):
