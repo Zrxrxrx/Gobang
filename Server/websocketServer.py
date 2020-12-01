@@ -2,6 +2,9 @@ import asyncio
 import websockets
 import json
 import game
+import sys
+sys.path.append("..")
+import ai
 # 接收客户端消息并处理，这里只是简单把客户端发来的返回回去
 async def recv_msg(websocket):
     g = None
@@ -17,7 +20,12 @@ async def recv_msg(websocket):
             g.chess(data['data'][0],data['data'][1])
             await websocket.send(','.join(str(i) for i in g.getRawTable()))
             if(g.checkWin(data['data'][0],data['data'][1])):
-                await websocket.send("win")
+                await websocket.send("you win")
+            aichess = ai.chessOne(g.tableTree)
+            g.chess(aichess[0],aichess[1])
+            await websocket.send(','.join(str(i) for i in g.getRawTable()))
+            if(g.checkWin(aichess[0],aichess[1])):
+                await websocket.send("you fail")
         
 
 # 服务器端主逻辑

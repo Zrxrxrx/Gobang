@@ -1,13 +1,21 @@
 class chess:
     xy = None
-    Next = []
-    def __init__(self,xy):
+    Next = None
+    def __init__(self,xy,Next=[]):
         self.xy=xy
+        self.Next=Next[:]
     def isIN(self,xy):
         return xy in self.Next
     def add(self,c):
         self.Next = []
         self.Next.append(c)
+    @staticmethod
+    def copy(root):
+        newc = chess(root.xy)
+        for temp in root.Next:
+            newtemp = chess.copy(temp)
+            newc.Next.append(newtemp)
+        return newc
 
 class table:
     size = None
