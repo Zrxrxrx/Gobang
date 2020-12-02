@@ -1,6 +1,7 @@
 class chess:
     xy = None
     Next = None
+    rate = 0
     def __init__(self,xy,Next=[]):
         self.xy=xy
         self.Next=Next[:]
