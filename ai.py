@@ -29,10 +29,10 @@ def createTree(tree,size,limit):
     Max = 0
     cur = None
     for v in root.Next:
-        if(len(xys)%2==1 and v.rate>Max):
+        if(len(xys)%2==1 and v.rate<Max):
             cur = v
             Max = v.rate
-        if(len(xys)%2==0 and v.rate<Max):
+        if(len(xys)%2==0 and v.rate>Max):
             cur = v
             Max = v.rate
     x = random.randint(1,size)
@@ -42,26 +42,24 @@ def createTree(tree,size,limit):
         x = math.ceil((cur.xy+1)/size)
         return [x,y]
     return None
-    
 def treeGroud(root,already,limit,size):
     if(limit==0):
         return 0
-    for i in range(0,size-1):
+    for i in range(0,size):
         if(i not in already):
             newAlready = already[:]
             newAlready.append(i)
             nextChess = tableClass.chess(i)
             root.Next.append(nextChess)
-            if(checkWin(already,i,size)):
+            if(checkWin(already,i,size,3)):
                 nextChess.rate += 1 if len(already)%2==1 else -1
             else:
                 treeGroud(nextChess,newAlready,limit-1,size)
             for sonChess in nextChess.Next:
                 nextChess.rate +=sonChess.rate
-                pass
 
-def checkWin(xys,xy,size):
-    table = [0 for a in range(size*size)]
+def checkWin(xys,xy,size,TO):
+    table = [0 for a in range(size)]
     current = 1 if len(xys)%2==1 else 2
     k =1
     for v in xys:
@@ -72,7 +70,7 @@ def checkWin(xys,xy,size):
     table[xy] = 1
     y = (xy+1)%size
     x = math.ceil((xy+1)/size)
-    if(check(x,y,1,0,check(x,y,-1,0,1,table),table)>=5 or check(x,y,0,1,check(x,y,0,-1,1,table),table)>=5 or check(x,y,1,1,check(x,y,-1,-1,1,table),table)>=5 or check(x,y,-1,1,check(x,y,1,-1,1,table),table)>=5):
+    if(check(x,y,1,0,check(x,y,-1,0,1,table),table)>=TO or check(x,y,0,1,check(x,y,0,-1,1,table),table)>=TO or check(x,y,1,1,check(x,y,-1,-1,1,table),table)>=TO or check(x,y,-1,1,check(x,y,1,-1,1,table),table)>=TO):
         return True
     else:
         return False
@@ -82,8 +80,9 @@ def check(x,y,ax,ay,count,table):
     else:
         return count
 def getPlayer(x,y,table):
-    size = int(math.sqrt(len(table)))
+    size = int(math.pow(len(table),0.5))
     k = (x-1)*size+y-1
+    print(x,y,k)
     if(x>0 and x<=size and y>0 and y<=size):
         return table[k]
     else:
