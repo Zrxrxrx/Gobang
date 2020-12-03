@@ -12,9 +12,10 @@ async def recv_msg(websocket):
         recv_text = await websocket.recv()
         await websocket.send("get")
         data = json.loads(recv_text)
-        
         if(data['type']=='start'):
             g = game.Game(size=data['data'])
+            aichess = ai.chessOne(g.tableTree)
+            g.chess(aichess[0],aichess[1])
             await websocket.send(','.join(str(i) for i in g.getRawTable()))
         if(data['type']=='chess'):
             g.chess(data['data'][0],data['data'][1])

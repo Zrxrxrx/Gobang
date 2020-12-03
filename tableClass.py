@@ -36,6 +36,8 @@ class table:
         tableMap = [0 for i in range(self.size*self.size)]
         i = 1
         c = self.firstChess
+        if(c==None):
+            return tableMap
         while(c.xy!=None):
             tableMap[c.xy] = 1 if i%2==1 else 2
             if(len(c.Next)>0):
