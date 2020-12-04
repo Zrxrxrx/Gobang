@@ -16,17 +16,29 @@ async def recv_msg(websocket):
             g = game.Game(size=data['data'])
             aichess = ai.chessOne(g.tableTree)
             g.chess(aichess[0],aichess[1])
-            await websocket.send(','.join(str(i) for i in g.getRawTable()))
+            await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
+            aichess = ai.chessOne(g.tableTree)
+            await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
+            #await websocket.send(','.join(str(i) for i in g.getRawTable()))
         if(data['type']=='chess'):
+            #下棋
             g.chess(data['data'][0],data['data'][1])
-            await websocket.send(','.join(str(i) for i in g.getRawTable()))
+            #返回棋盘
+            await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
+            aichess = ai.chessOne(g.tableTree)
+            await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
+            #检查胜利
             if(g.checkWin(data['data'][0],data['data'][1])):
                 await websocket.send("you win")
+        if(data['type']=='aiplay'):
             aichess = ai.chessOne(g.tableTree)
             g.chess(aichess[0],aichess[1])
-            await websocket.send(','.join(str(i) for i in g.getRawTable()))
+            await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
+            await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
+            #检查胜利
             if(g.checkWin(aichess[0],aichess[1])):
                 await websocket.send("you fail")
+            
         
 
 # 服务器端主逻辑

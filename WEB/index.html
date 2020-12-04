@@ -15,6 +15,9 @@
             <button @click="start">
                 初始化
             </button>
+            <button @click="aiplay">
+                AI下棋
+            </button>
         </div>
         <canvas id="canvas" :width="canvasWidth" :height="canvasHeight" @click="chess"></canvas>
         <ul>
@@ -34,6 +37,7 @@
                 history: [],
                 data: [],
                 context: {},
+                perdict:[],
                 canvasWidth: 800,
                 canvasHeight: 800
             }
@@ -67,12 +71,19 @@
                 console.log("连接错误")
             },
             getMessage: function (msg) {
-                //this.history.push(msg.data);
-                console.log(msg.data);
-                if (msg.data == "win") {
+                console.log(msg)
+                if(msg.data=="get"){
+                    return ;
+                }
+                this.history.push(msg.data);
+                let data = JSON.parse(msg.data);
+                if (data.type == "win") {
                     alert("win")
-                } else {
-                    this.data = msg.data.replace("[", "").replace("]", "").split(',');
+                } else if(data.type=="data"){
+                    this.data = data.data;
+                    this.print();
+                } else if(data.type =="predict"){
+                    this.predict = data.data;
                     this.print();
                 }
             },
@@ -83,6 +94,9 @@
             close: function () {
                 console.log("socket已经关闭")
             },
+            aiplay: function(){
+                this.send(JSON.stringify({ type: 'aiplay' }))
+            },
             start: function () {
                 this.send(JSON.stringify({ type: 'start', data: this.size }))
             },
@@ -92,6 +106,9 @@
                 }
             },
             print: function () {
+                this.ctx.fillStyle = 'white';
+                this.ctx.fillRect(0,0,this.canvasWidth,this.canvasHeight);
+                this.ctx.fillStyle = 'black';
                 console.log(this.data.length)
                 let size = parseInt(this.size);
                 let w = this.canvasWidth / size;
@@ -137,6 +154,17 @@
                         this.ctx.arc(xw, yh, w / 2 * 0.8, 0, 2 * Math.PI);
                         this.ctx.stroke();
                         this.ctx.fill();
+
+                        this.ctx.strokeStyle = 'black';
+                        number = x * size + y;
+                        let pre = this.predict.filter(e=>e.xy==number);
+                        let rate = 0;
+                        if(pre.length>0){
+                            rate = pre[0].rate;
+                        }
+                        this.ctx.font = 'bold 35px Arial';
+                        this.ctx.strokeText(rate, xw, yh);
+                        console.log(123)
                     }
                 }
             }

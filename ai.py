@@ -30,6 +30,7 @@ def createTree(tree,size,limit):
             current = None
     Max = 0
     cur = None
+    rates = []
     for v in root.Next:
         temp1 = abs(v.rate)
         if(temp1>Max):#len(xys)%2==1 and 
@@ -38,12 +39,13 @@ def createTree(tree,size,limit):
         # if(len(xys)%2==0 and v.rate<Max):
         #     cur = v
         #     Max = v.rate
+        rates.append({"xy":v.xy,"rate":v.rate})
     x = random.randint(1,size)
     y = random.randint(1,size)
     if(cur!=None):
         y = (cur.xy)%size+1
         x = math.ceil((cur.xy+1)/size)
-        return [x,y]
+        return [x,y,rates]
     return None
 def treeGroud(root,already,limit,size):
     if(limit==0):
@@ -58,10 +60,10 @@ def treeGroud(root,already,limit,size):
             root.Next.append(nextChess)
             if(checkWin(already,i,size,3)):
                 if(len(already)%2==1):
-                    nextChess.rate += size ** limit
+                    nextChess.rate += 1/(size ** limit)
                 else:
-                    nextChess.rate -= size ** limit
-                    nextChess.rate += limit
+                    nextChess.rate -= 1/(size ** limit)
+                    #nextChess.rate += 1/limit
             else:
                 treeGroud(nextChess,newAlready,limit-1,size)
             for sonChess in nextChess.Next:
