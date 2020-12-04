@@ -59,7 +59,7 @@ def treeGroud(root,already,limit,size):
             nextChess = tableClass.chess(i)
             root.Next.append(nextChess)
             x = 1
-            for xi in range(1,size*size-len(already)):
+            for xi in range(size*size,size*size-len(already)):
                 x  = x*xi
             if(checkWin(already,i,size,3)):
                 if(len(already)%2==1):

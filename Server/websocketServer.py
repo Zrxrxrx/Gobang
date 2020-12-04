@@ -18,7 +18,8 @@ async def recv_msg(websocket):
             g.chess(aichess[0],aichess[1])
             await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
             aichess = ai.chessOne(g.tableTree)
-            await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
+            if(len(aichess)>0):
+                await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
             #await websocket.send(','.join(str(i) for i in g.getRawTable()))
         if(data['type']=='chess'):
             #下棋
@@ -26,19 +27,21 @@ async def recv_msg(websocket):
             #返回棋盘
             await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
             aichess = ai.chessOne(g.tableTree)
-            await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
+            if(len(aichess)>0):
+                await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
             #检查胜利
             if(g.checkWin(data['data'][0],data['data'][1])):
-                await websocket.send("you win")
+                await websocket.send({'type':'msg','data':"you win"})
         if(data['type']=='aiplay'):
             aichess = ai.chessOne(g.tableTree)
             g.chess(aichess[0],aichess[1])
             await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
             aichess = ai.chessOne(g.tableTree)
-            await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
+            if(len(aichess)>0):
+                await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
             #检查胜利
             if(g.checkWin(aichess[0],aichess[1])):
-                await websocket.send("you fail")
+                await websocket.send({'type':'msg','data':"you fail"})
             
 # 服务器端主逻辑
 # websocket和path是该函数被回调时自动传过来的，不需要自己传
