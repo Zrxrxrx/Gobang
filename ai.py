@@ -26,7 +26,7 @@ def createTree(tree,size,limit):
             current = current.Next[0]
             root = current
         else:
-            treeGroud(current,xys,limit,size)
+            treeGrow(current,xys,limit,size)
             current = None
     Max = 0
     cur = None
@@ -47,7 +47,7 @@ def createTree(tree,size,limit):
         x = math.ceil((cur.xy+1)/size)
         return [x,y,rates]
     return None
-def treeGroud(root,already,limit,size):
+def treeGrow(root,already,limit,size):
     if(limit==0):
         return 0
     for i in range(0,size*size):
@@ -59,16 +59,16 @@ def treeGroud(root,already,limit,size):
             nextChess = tableClass.chess(i)
             root.Next.append(nextChess)
             x = 1
-            for xi in range(size*size,size*size-len(already)):
+            for xi in range(size*size,size*size-len(already)-1):
                 x  = x*xi
             if(checkWin(already,i,size,3)):
                 if(len(already)%2==1):
-                    nextChess.rate += 1/x
+                    nextChess.rate += (1/x)
                 else:
-                    nextChess.rate -= 1/x
+                    nextChess.rate -= (1/x)
                     #nextChess.rate += 1/limit
             else:
-                treeGroud(nextChess,newAlready,limit-1,size)
+                treeGrow(nextChess,newAlready,limit-1,size)
             for sonChess in nextChess.Next:
                 nextChess.rate +=sonChess.rate
 
