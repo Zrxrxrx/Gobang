@@ -58,11 +58,14 @@ def treeGroud(root,already,limit,size):
             newAlready.append(i)
             nextChess = tableClass.chess(i)
             root.Next.append(nextChess)
+            x = 1
+            for xi in range(1,size*size-len(already)):
+                x  = x*xi
             if(checkWin(already,i,size,3)):
                 if(len(already)%2==1):
-                    nextChess.rate += 1/(size ** limit)
+                    nextChess.rate += 1/x
                 else:
-                    nextChess.rate -= 1/(size ** limit)
+                    nextChess.rate -= 1/x
                     #nextChess.rate += 1/limit
             else:
                 treeGroud(nextChess,newAlready,limit-1,size)
