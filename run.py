@@ -1,26 +1,24 @@
-from game import Game
+from game import Game, players
 import ai
 
 size = 3
 
 if __name__ == "__main__":
     g = Game(size)
-    g.print_2D_table()
 
-    while True:
-        if g.player == 1:
-            success_put = False
-            while not success_put:
-                input_str = input('input (x y): ')
-                x, y = list(map(int, input_str.split(' ')))
-                success_put = g.chess(x, y)
-            g.print_2D_table()
+    while not g.end:
+        if g.current_player == players['human']:
+            success_put_chess = False
+            while not success_put_chess:
+                input_str = input('input(x,y): ')
+                x, y = map(int, input_str.split(' '))
+                success_put_chess = g.put_chess(x, y)
         else:
-            print('ai step')
-            x, y = ai.ai_step(g.tableTree)
-            print(x , ' ' , y)
-            s = g.chess(x, y)
-            if not s:
-                print('error')
-                break
-            g.print_2D_table()
+            x, y = ai.ai_step(g.table)
+            g.put_chess(x, y)
+        
+        print(str(g.table))
+        
+        if g.table.check_winner(x, y):
+            g.end = True
+            
