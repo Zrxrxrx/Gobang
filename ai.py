@@ -88,6 +88,7 @@ def ai_step(table):
         for y, chess in enumerate(row, start=1):
             if chess.owner != '*':
                 continue
+            print(f'AI: Start search {x} {y}')
             new_table = copy.deepcopy(table)
             # print('%d, %d', x, y)
             new_table.put_chess(x, y, players['ai'])

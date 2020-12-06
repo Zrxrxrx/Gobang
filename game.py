@@ -8,12 +8,13 @@ players = {
 class Game():
     table = None
     mapsize = 0
-    current_player = players['ai']
+    current_player = players['human']
     end = False
-    def __init__(self, size=10):
+    def __init__(self, player, size=10):
         size = int(size)
         self.mapsize = size
         self.table = Table(size)
+        self.current_player = player
 
     def put_chess(self, x, y):
         if self.current_player == players['human']:

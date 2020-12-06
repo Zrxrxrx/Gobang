@@ -1,14 +1,14 @@
 from game import Game, players
 import ai
 
-size = 3
+size = 4
 
 if __name__ == "__main__":
-    g = Game(size)
+    g = Game(players['human'], size=3)
 
     while not g.end:
         if g.current_player == players['human']:
-            print('human turn')
+            print('Human turn')
             success_put_chess = False
             while not success_put_chess:
                 input_str = input('input(x,y): ')
