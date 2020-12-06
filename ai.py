@@ -2,6 +2,7 @@ import tableClass
 import random,math
 from other import convert_to_1D, convert_to_2D
 import copy
+from game import players
 def chessOne(t):
     #a = copy
     x = random.randint(1,t.size)
@@ -80,23 +81,22 @@ def treeGrow(root,already,limit,size):
 
 
 def ai_step(table):
-    best_socore = -math.inf
+    best_score = -math.inf
     best_move = None
     # print(select_empty_chess(table.getArray()))
-    for index, chess in enumerate(table.getArray(), start=1):
-        if chess != 0:
-            continue
-        temp_x, temp_y = convert_to_2D(index, 3)
-        print(temp_x, ' ', temp_y)
-        new_table = copy.deepcopy(table)
-        new_table.chess(temp_x, temp_y)
-        score = min_max(new_table)
-        if score > best_socore:
-            best_move = index
-            best_socore = score
+    for x, row in enumerate(table.table):
+        for y, chess in enumerate(row):
+            if chess.owner != '*':
+                continue
+            new_table = copy.deepcopy(table)
+            print('%d, %d', x, y)
+            new_table.put_chess(x, y, players['ai'])
+            score = min_max(new_table)
+            if score > best_score:
+                best_move = (x, y)
+                best_score = score
     
-    x, y = convert_to_2D(best_move, table.size)
-    return [x, y]
+    return best_move
 
 
 def min_max(table):
