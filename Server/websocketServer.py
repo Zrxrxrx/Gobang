@@ -18,7 +18,7 @@ async def recv_msg(websocket):
             g.chess(aichess[0],aichess[1])
             await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
             aichess = ai.chessOne(g.tableTree)
-            if(len(aichess)>0):
+            if(len(aichess)>2):
                 await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
             #await websocket.send(','.join(str(i) for i in g.getRawTable()))
         if(data['type']=='chess'):
@@ -27,7 +27,7 @@ async def recv_msg(websocket):
             #返回棋盘
             await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
             aichess = ai.chessOne(g.tableTree)
-            if(len(aichess)>0):
+            if(len(aichess)>2):
                 await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
             #检查胜利
             if(g.checkWin(data['data'][0],data['data'][1])):
@@ -37,7 +37,7 @@ async def recv_msg(websocket):
             g.chess(aichess[0],aichess[1])
             await websocket.send(json.dumps({'type':'data','data':g.getRawTable()}))
             aichess = ai.chessOne(g.tableTree)
-            if(len(aichess)>0):
+            if(len(aichess)>2):
                 await websocket.send(json.dumps({'type':'predict','data':aichess[2]}))
             #检查胜利
             if(g.checkWin(aichess[0],aichess[1])):
