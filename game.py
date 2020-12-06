@@ -8,7 +8,7 @@ players = {
 class Game():
     table = None
     mapsize = 0
-    current_player = players['human']
+    current_player = players['ai']
     end = False
     def __init__(self, size=10):
         size = int(size)

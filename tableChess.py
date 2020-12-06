@@ -34,6 +34,8 @@ class Table():
         y -= 1
         return self.table[x][y]
 
+    def change_chess(self, x, y, string):
+        self.table[x][y] = string
 
 
     def check_winner(self, x, y):
