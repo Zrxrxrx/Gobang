@@ -15,9 +15,17 @@ class Game():
             pass
     def getRawTable(self):
         return self.tableMap
+
+    def print_2D_table(self):
+        print('=' * 30)
+        for i, chess in enumerate(self.tableMap, start=1):
+            print(chess, end='\t')
+            if i % self.mapsize == 0:
+                print('\n', end='')
+
     def chess(self,x,y):
         if(self.getPlayer(x,y)!=0):
-            return
+            return False
         self.tableTree.chess(x,y)
         self.tableMap = self.tableTree.getArray()
         #self.tableMap[(x-1)*self.mapsize+y-1] = self.player
@@ -25,6 +33,7 @@ class Game():
             self.player=2
         else:
             self.player=1
+        return True
     #get which players current x,y
     #return 0,1,2
     def getPlayer(self,x,y):
@@ -32,7 +41,6 @@ class Game():
             return self.tableMap[(x-1)*self.mapsize+y-1]
         else:
             return -1
-            pass
     def checkWin(self,x,y):
         if(self.check(x,y,1,0,self.check(x,y,-1,0,1))>=5 or self.check(x,y,0,1,self.check(x,y,0,-1,1))>=5 or self.check(x,y,1,1,self.check(x,y,-1,-1,1))>=5 or self.check(x,y,-1,1,self.check(x,y,1,-1,1))>=5):
             return True

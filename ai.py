@@ -1,5 +1,7 @@
 import tableClass
 import random,math
+from other import convert_to_1D, convert_to_2D
+import copy
 def chessOne(t):
     #a = copy
     x = random.randint(1,t.size)
@@ -71,6 +73,57 @@ def treeGrow(root,already,limit,size):
                 treeGrow(nextChess,newAlready,limit-1,size)
             for sonChess in nextChess.Next:
                 nextChess.rate +=sonChess.rate
+
+# def select_empty_chess(table):
+#     rest = filter(lambda c: c == 0, table)
+#     return list(rest)
+
+
+def ai_step(table):
+    best_socore = -math.inf
+    best_move = None
+    # print(select_empty_chess(table.getArray()))
+    for index, chess in enumerate(table.getArray(), start=1):
+        if chess != 0:
+            continue
+        temp_x, temp_y = convert_to_2D(index, 3)
+        print(temp_x, ' ', temp_y)
+        new_table = copy.deepcopy(table)
+        new_table.chess(temp_x, temp_y)
+        score = min_max(new_table)
+        if score > best_socore:
+            best_move = index
+            best_socore = score
+    
+    x, y = convert_to_2D(best_move, table.size)
+    return [x, y]
+
+
+def min_max(table):
+    return 1
+
+
+# def get_win_rate(point, table, depth, is_self):
+#     if depth == 0:
+#         return 0
+    
+#     candidate_points = select_empty_chess(table)
+    
+#     # table is full
+#     if not candidate_points:
+#         return 0
+    
+#     # set chess to new table
+#     new_table = table.copy()
+#     new_table.set_chess(p)
+
+#     if checkWin(new_table) and 
+
+#     for p in candidate_points:
+#         new_table = table.copy()
+#         new_table.set_chess(p)
+
+#     return 0
 
 def checkWin(xys,xy,size,TO):
     table = [0 for a in range(size*size)]
