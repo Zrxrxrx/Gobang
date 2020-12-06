@@ -96,7 +96,7 @@ def ai_step(table):
                 best_move = (x, y)
                 best_score = score
     
-    return best_move
+    return best_move[0]+1, best_move[1]+1
 
 
 def min_max(table):

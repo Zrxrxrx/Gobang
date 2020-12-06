@@ -35,6 +35,15 @@ class Table():
         return self.table[x][y]
 
     def check_winner(self, x, y):
+        tie = True
+        for row in self.table:
+            for chess in row:
+                if chess.owner == '*':
+                    tie = False
+        
+        if tie:
+            return 'tie'
+
         chess = self.table[x-1][y-1]
         x -= 1
         y -= 1

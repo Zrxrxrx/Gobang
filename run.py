@@ -17,12 +17,19 @@ if __name__ == "__main__":
         else:
             print('AI turn')
             x, y = ai.ai_step(g.table)
-            g.put_chess(x, y)
+            d = g.put_chess(x, y)
+            if d == False:
+                print(x, y)
+                print('AI error')
+                break
         
         print(str(g.table))
         
-        winner = g.table.check_winner(x, y) 
+        winner = g.table.check_winner(x, y)
         if winner:
             g.end = True
-            print(f'winner is {winner}')
+            if winner == 'tie':
+                print('Tie')
+            else:
+                print(f'winner is {winner}')
             
