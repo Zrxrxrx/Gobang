@@ -89,9 +89,9 @@ def ai_step(table):
             if chess.owner != '*':
                 continue
             new_table = copy.deepcopy(table)
-            print('%d, %d', x, y)
-            new_table.put_chess(x, y, players['ai'])
-            score = min_max(new_table)
+            # print('%d, %d', x, y)
+            new_table.put_chess(x+1, y+1, players['ai'])
+            score = min_max(new_table, 0, False, x+1, y+1)
             if score > best_score:
                 best_move = (x, y)
                 best_score = score
@@ -99,8 +99,43 @@ def ai_step(table):
     return best_move[0]+1, best_move[1]+1
 
 
-def min_max(table):
-    return 1
+def min_max(table, depth, is_ai, x, y):
+    score = {
+        players['human']: -1,
+        players['ai']: 1,
+        'tie': 0
+    }
+    # print(table)
+    # print(depth)
+    result = table.check_winner(x, y)
+    if result:
+        return score[result]
+    
+    if is_ai:
+        best_score = -math.inf
+        for x, row in enumerate(table.table):
+            for y, chess in enumerate(row):
+                if str(chess) != '*':
+                    continue
+                new_table = copy.deepcopy(table)
+                new_table.put_chess(x+1, y+1, players['ai'])
+                score = min_max(new_table, depth + 1, False, x+1, y+1)
+                best_score = max(score, best_score)
+
+        return best_score
+    else:
+        best_score = math.inf
+        for x, row in enumerate(table.table):
+            for y, chess in enumerate(row):
+                if str(chess) != '*':
+                    continue
+                new_table = copy.deepcopy(table)
+                new_table.put_chess(x+1, y+1, players['human'])
+                score = min_max(new_table, depth + 1, True, x+1, y+1)
+                best_score = min(score, best_score)
+
+        return best_score
+
 
 
 # def get_win_rate(point, table, depth, is_self):

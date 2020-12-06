@@ -26,13 +26,15 @@ class Table():
         x -= 1
         y -= 1
         r = self.table[x][y].put(player)
-        print(f'put chess: {r}')
+        # print(f'put chess: {r}')
         return r
 
     def get_chess(self, x, y):
         x -= 1
         y -= 1
         return self.table[x][y]
+
+
 
     def check_winner(self, x, y):
         tie = True
