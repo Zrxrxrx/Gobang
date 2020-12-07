@@ -190,3 +190,12 @@ def getPlayer(x,y,table):
         return table[k]
     else:
         return 0
+
+def evaluate(table, x, y):
+    score = 0
+    for row in table.table:
+        for chess in row:
+            pass
+
+
+    return score
