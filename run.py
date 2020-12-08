@@ -1,26 +1,34 @@
-from game import Game
+from game import Game, players
 import ai
-
-size = 3
+from config import size, Ai_max_depth
 
 if __name__ == "__main__":
-    g = Game(size)
-    g.print_2D_table()
+    g = Game(players['human'], size=3)
 
-    while True:
-        if g.player == 1:
-            success_put = False
-            while not success_put:
-                input_str = input('input (x y): ')
-                x, y = list(map(int, input_str.split(' ')))
-                success_put = g.chess(x, y)
-            g.print_2D_table()
+    while not g.end:
+        if g.current_player == players['human']:
+            print('Human turn')
+            success_put_chess = False
+            while not success_put_chess:
+                input_str = input('input(x,y): ')
+                x, y = map(int, input_str.split(' '))
+                success_put_chess = g.put_chess(x, y)
         else:
-            print('ai step')
-            x, y = ai.ai_step(g.tableTree)
-            print(x , ' ' , y)
-            s = g.chess(x, y)
-            if not s:
-                print('error')
+            print('AI turn')
+            x, y = ai.ai_step(g.table)
+            d = g.put_chess(x, y)
+            if d == False:
+                print(x, y)
+                print('AI error')
                 break
-            g.print_2D_table()
+        
+        print(str(g.table))
+        
+        winner = g.table.check_winner(x, y)
+        if winner:
+            g.end = True
+            if winner == 'tie':
+                print('Tie')
+            else:
+                print(f'winner is {winner}')
+            
