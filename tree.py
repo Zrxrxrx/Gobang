@@ -1,4 +1,5 @@
 from config import size, Ai_max_depth
+from game import players
 import math
 import copy
 
@@ -25,4 +26,12 @@ class Node():
             return best_score
         else:
             raise ValueError('Bad node type')
+
+    def evaluate(self, table, x, y):
+        score = 0
+        for row in table.table:
+            for chess in row:
+                pass
+
+        return score
         
