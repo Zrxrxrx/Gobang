@@ -1,7 +1,6 @@
 from game import Game, players
 import ai
-
-size = 4
+from config import size, Ai_max_depth
 
 if __name__ == "__main__":
     g = Game(players['human'], size=3)
