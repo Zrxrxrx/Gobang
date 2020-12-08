@@ -37,7 +37,7 @@
                 history: [],
                 data: [],
                 context: {},
-                perdict:[],
+                perdict: [],
                 canvasWidth: 800,
                 canvasHeight: 800
             }
@@ -72,17 +72,17 @@
             },
             getMessage: function (msg) {
                 console.log(msg)
-                if(msg.data=="get"){
-                    return ;
+                if (msg.data == "get") {
+                    return;
                 }
                 this.history.push(msg.data);
                 let data = JSON.parse(msg.data);
                 if (data.type == "win") {
                     alert("win")
-                } else if(data.type=="data"){
+                } else if (data.type == "data") {
                     this.data = data.data;
                     this.print();
-                } else if(data.type =="predict"){
+                } else if (data.type == "predict") {
                     this.predict = data.data;
                     this.print();
                 }
@@ -94,7 +94,7 @@
             close: function () {
                 console.log("socket已经关闭")
             },
-            aiplay: function(){
+            aiplay: function () {
                 this.send(JSON.stringify({ type: 'aiplay' }))
             },
             start: function () {
@@ -107,7 +107,7 @@
             },
             print: function () {
                 this.ctx.fillStyle = 'white';
-                this.ctx.fillRect(0,0,this.canvasWidth,this.canvasHeight);
+                this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
                 this.ctx.fillStyle = 'black';
                 console.log(this.data.length)
                 let size = parseInt(this.size);
@@ -157,13 +157,15 @@
 
                         this.ctx.strokeStyle = 'black';
                         number = x * size + y;
-                        let pre = this.predict.filter(e=>e.xy==number);
-                        let rate = 0;
-                        if(pre.length>0){
-                            rate = pre[0].rate;
+                        if (this.perdict.length > 0) {
+                            let pre = this.perdict.filter(e => e.xy == number);
+                            let rate = 0;
+                            if (pre.length > 0) {
+                                rate = pre[0].rate;
+                            }
+                            this.ctx.font = 'bold 35px Arial';
+                            this.ctx.strokeText(rate, xw, yh);
                         }
-                        this.ctx.font = 'bold 35px Arial';
-                        this.ctx.strokeText(rate, xw, yh);
                         console.log(123)
                     }
                 }

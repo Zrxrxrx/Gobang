@@ -72,6 +72,17 @@ class Table():
                 if chess.owner != '*':
                     result.append((x, y))
         return result
+    def getArray(self):
+        result = []
+        for x, row in enumerate(self.table):
+            for y, chess in enumerate(row):
+                if(chess.owner=='*'):
+                    result.append(0)
+                if(chess.owner=='O'):
+                    result.append(1)
+                if(chess.owner=='X'):
+                    result.append(2)
+        return result
 
 
 class Chess():
