@@ -64,6 +64,14 @@ class Table():
             return chess.owner
         else:
             return None
+    
+    def available_points(self):
+        result = []
+        for x, row in enumerate(self.table):
+            for y, chess in enumerate(row):
+                if chess.owner != '*':
+                    result.append((x, y))
+        return result
 
 
 class Chess():
