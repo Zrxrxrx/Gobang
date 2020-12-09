@@ -51,15 +51,11 @@ class Table():
         chess = self.table[x-1][y-1]
         x -= 1
         y -= 1
-        r1 = chess.check_neighbor(self, self.check_size, x, y, 1, 0)
-        r2 = chess.check_neighbor(self, self.check_size, x, y, -1, 0)
-        r3 = chess.check_neighbor(self, self.check_size, x, y, 0, 1)
-        r4 = chess.check_neighbor(self, self.check_size, x, y, 0, -1)
-        r5 = chess.check_neighbor(self, self.check_size, x, y, 1, -1)
-        r6 = chess.check_neighbor(self, self.check_size, x, y, 1, 1)
-        r7 = chess.check_neighbor(self, self.check_size, x, y, -1, 1)
-        r8 = chess.check_neighbor(self, self.check_size, x, y, -1, -1)
-        if r1 or r2 or r3 or r4 or r5 or r5 or r6 or r7 or r8:
+        r1 = chess.check_neighbor(self, chess.check_neighbor(self, self.check_size, x, y, -1, 0), x, y, 1, 0)
+        r3 = chess.check_neighbor(self, chess.check_neighbor(self, self.check_size, x, y, 0, -1), x, y, 0, 1)
+        r5 = chess.check_neighbor(self, chess.check_neighbor(self, self.check_size, x, y, -1, 1), x, y, 1, -1)
+        r6 = chess.check_neighbor(self, chess.check_neighbor(self, self.check_size, x, y, -1, -1), x, y, 1, 1)
+        if r1==1 or r3==1 or  r5==1 or  r6==1:
             self.winner = chess.owner
             return chess.owner
         else:
@@ -106,16 +102,14 @@ class Chess():
         temp_y = y + offset_y
         # print(f'x={temp_x:2} y={temp_y:2} {check_size}')
 
-        if check_size == 1:
-            return True
-
         if temp_x < 0 or temp_y < 0 or temp_x >= table.size or temp_y >= table.size:
             # print('out')
-            return False
+            return check_size
 
-        if table.table[temp_x][temp_y].owner != self.owner:
+        if table.table[temp_x][temp_y].owner == self.owner:
             # print('not same')
-            return False
+            return self.check_neighbor(table, check_size-1, temp_x, temp_y, offset_x, offset_y)
+        else:
+            return check_size
         
-        return self.check_neighbor(table, check_size-1, temp_x, temp_y, offset_x, offset_y)
         
