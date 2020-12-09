@@ -45,8 +45,6 @@ class Table():
                 if chess.owner == '*':
                     tie = False
         
-        if tie:
-            return 'tie'
 
         chess = self.table[x-1][y-1]
         x -= 1
@@ -59,6 +57,8 @@ class Table():
             self.winner = chess.owner
             return chess.owner
         else:
+            if tie:
+                return 'tie'
             return None
     
     def available_points(self):
